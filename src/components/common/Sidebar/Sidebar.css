@@ -1,0 +1,88 @@
+.threeBarIcon{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+.threeBarIcon> svg{
+    margin-top: 50%;
+    margin-right: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.navbar {
+    height: 80px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+  
+  .menu-bars {
+    margin-left: 2rem;
+    font-size: 2rem;
+    background: none;
+  }
+  
+  .nav-menu {
+    position: absolute;
+    top: 0;
+    background-color: #060b26;
+    width: 17%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    left: -100%;
+    transition: 850ms;
+  }
+  
+  .nav-menu.active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 350ms;
+  }
+  
+  .nav-text {
+    cursor: pointer;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+    transition:all 0.2s;
+    border: 2px solid transparent;
+  }
+  
+
+  .nav-text:hover {
+    border: 2px solid black;
+    /* transition:all 0.3s; */
+  }
+
+  .activatedSideItem {
+    color: #ffffff;
+    background-color: #000000;
+  }
+  
+  
+  .nav-menu-items {
+    padding: 0 16px;
+    width: 100%;
+  }
+  
+  .navbar-toggle {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    display: flex;
+    justify-content: end;
+  }
+  .navbar-toggle > svg{
+    margin-right: 10%;
+    cursor: pointer;
+  }
+  span {
+    margin-left: 16px;
+  }

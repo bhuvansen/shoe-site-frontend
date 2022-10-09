@@ -1,0 +1,13 @@
+.price-box{
+    padding: 30px;
+}
+.price-header{
+    font-size: 32px;
+    font-weight: 500;
+}
+.font-weight-700{
+    font-weight: 700;
+}
+.price-box button{
+    margin-left: 0;
+}

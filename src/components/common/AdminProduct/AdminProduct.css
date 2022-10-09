@@ -1,0 +1,43 @@
+.quantity-size{
+    display: inline-flex;
+    position: relative;
+    /* width: 50%;
+    left: 1%; */
+    width: 53%;
+    left: 2.5%;
+}
+.width-100{
+    width: 100% ;
+}
+
+.quantity-size .input-container{
+    position: relative;
+    left: 0;
+    margin-right: 10px;
+}
+.add-button-quantity{
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    width: 40%;
+    margin-top: 48px;
+    margin-right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.close-icon{
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+}
+.close-icon svg{
+    cursor: pointer;
+    color: red;
+    margin: 5px;
+}
+#size-quant-section div:nth-child(1) .quantity-size {
+   width: 50%;
+    left: 1%;
+} 

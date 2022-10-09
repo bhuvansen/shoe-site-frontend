@@ -1,0 +1,87 @@
+.card{
+  overflow: hidden;
+  padding: 15px;
+  transition: all 0.5s;
+}
+.card:hover{
+  box-shadow: 2px 2px 30px 1px grey
+}
+.m-20{
+  margin: 20px !important;
+}
+.prl-20{
+  padding: 0 20px;
+}
+.border-none{
+  border: none !important;
+}
+.title-price-tag {
+  margin: 0 10px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title-price-tag .name {
+  font-weight: 600;
+}
+.img-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 215px;
+}
+.img-section img {
+  width: 180px;
+  transition: all 0.3s;
+}
+.card:hover img {
+  transform: scale(1.1);
+}
+.card:hover .slider-section {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.slider-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+  transform: translateY(100%);
+}
+
+.slider-up {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.slider-up span {
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 15px;
+  border-radius: 30px;
+  width: 165px;
+  text-align: center;
+  transition: all 0.3s;
+  margin: 5px 0;
+}
+.card-button {
+  border: 1px solid black;
+  
+  background-color: black;
+  color: white;
+}
+.card-button:hover {
+  background-color: rgb(228, 228, 228);
+  color: black;
+}

@@ -1,0 +1,13 @@
+.existing-category-card{
+    padding: 20px;
+    width: fit-content;
+    position: relative;
+    left: 20%;
+    background-color: aquamarine;
+}
+.action-col{
+display: flex;
+    justify-content: space-evenly}
+    .cursor-pointer{
+        cursor: pointer;
+    }

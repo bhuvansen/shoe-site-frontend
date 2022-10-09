@@ -1,0 +1,18 @@
+
+.popUp{
+    display: grid !important;
+    place-items: center !important;
+}
+.modal-title, .modal-body, .modal-footer{
+    font-family: 'Montserrat';
+    border:none !important
+}
+.modal-title{
+    margin-right: 64px;
+}
+.modal-content{
+    border-radius: 0 !important;
+}
+.modal-dialog{
+    min-width: 30% ;
+}

@@ -1,0 +1,25 @@
+ .logo{
+    font-weight: 800 ;
+    font-size: 30px !important;
+} 
+.nav-bar-right-fix{
+    margin-right: 50px !important;
+}
+.navbuttons{
+    font-weight: 700;
+}
+.cursorPointer{
+    cursor: pointer;
+}
+.cartLogo{
+    width: 25px;
+    margin-left: 16px;
+    cursor: pointer;
+    opacity: 0.5;
+    display: block;
+    align-self: center;
+}
+.boder-dropdown{
+    border-radius: 0;
+    border-color: black;
+}

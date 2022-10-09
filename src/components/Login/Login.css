@@ -1,0 +1,95 @@
+
+
+
+  .shoeCol{
+    display: flex;
+    justify-content: center;
+}
+.shoeSVG{
+    width: 50%;
+    margin-top: 80px;
+}
+
+.shoeSVG img {
+    animation: updown 3s linear infinite;
+  }
+  @keyframes updown {
+      0% {
+          transform: translateY(-20px);
+      }
+      50% {
+          transform: translateY(20px) rotate(4deg);
+      }
+      100% {
+          transform: translateY(-20px) ;
+      }
+  }
+
+/* 
+
+  .input-container {
+    position: relative;
+    left: 26%;
+    width: 50%;
+  }
+  
+  .label {
+    position: absolute;
+    left: 10px;
+    top: 14px;
+    transition: all 0.3s;
+    padding: 0 2.5px;
+    z-index: 1;
+    color: #b3b3b3;
+  }
+  
+  .label::before {
+    content: "";
+    height: 5px;
+    background: rgba(var(--bs-light-rgb));
+    position: absolute;
+    left: 0px;
+    top: 8px;
+    width: 100%;
+    z-index: -1;
+  }
+  
+  .text-input {
+    padding: 0.8rem;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #9c9c9c;
+    background: rgba(var(--bs-light-rgb));
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.5s;
+    color: black;
+  }
+  
+  .text-input:focus {
+    border: 2px solid black;
+  }
+  
+  .text-input:focus + .label,
+  .nonEmpty {
+    top: -8px;
+    color: black;
+    font-size: 14px;
+  }
+  
+  .text-input::placeholder {
+    font-size: 16px;
+    opacity: 0;
+    transition: all 0.3s;
+  }
+  
+  .text-input:focus::placeholder {
+    opacity: 1;
+  } */
+
+    .form-side{
+        border-left: 1px solid black;
+        
+
+}
