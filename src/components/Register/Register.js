@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import NavbarApp from "../common/Navbar/NavbarApp"
 import "../Login/Login.css"
 import loginShoe from "../../Asset/loginShoe.svg"
@@ -6,24 +6,58 @@ import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import { useSelector, useDispatch } from "react-redux"
 import Button from "../common/button/button"
-import { updateFieldState } from "../../store/action/form-action"
+import { updateFieldState, updateFieldValidationState } from "../../store/action/form-action"
 import { handleNonEmptyFieldCSS } from "../../common/utils"
 import { useNavigate } from "react-router-dom"
 import Popup from "../common/Modal/Modal"
 import axios from "axios"
 import API from "../../backend"
+import InputText from "../common/Input-Fields/InputText"
 
 const Register = () => {
   const navigate = useNavigate()
   const form = useSelector((state) => state.formReducer)
+  const validationForm = useSelector((state) => state.formValidationReducer)
 
   const dispatch = useDispatch()
+
+  const [disableState, setDisableState] = useState(false)
+  const [hidePassword, setHidePassword] = useState(true)
 
   const onInputChange = (event) => {
     let name = event.target.name
     let value = event.target.value
     dispatch(updateFieldState(name, value))
     handleNonEmptyFieldCSS(event)
+    if ((name === "email" || name === "firstName" || name === "password") && value.length === 0){
+      dispatch(updateFieldValidationState(name, true, "Field cannot be empty"))
+    }else{
+      let regex
+      switch(name){
+        case "email":
+          regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})$/i
+          if (!regex.test(value)){
+            dispatch(updateFieldValidationState(name, true, "Please enter correct email address"))
+          }else{
+            dispatch(updateFieldValidationState(name, false, ""))
+          }
+          break
+        case "password":
+          regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^\&*\)\(+=._-])[!-~]{6,}$/
+          if (!regex.test(value)){
+            dispatch(updateFieldValidationState(name, true, "Password should be combination of Uppercase, lowercase, digits and special characters"))
+          }else{
+            dispatch(updateFieldValidationState(name, false, ""))
+          }
+          break
+        case "firstName":
+          if (value.length<3){
+            dispatch(updateFieldValidationState(name, true, "First Name should be atleast 3 characters long"))
+          }else{
+            dispatch(updateFieldValidationState(name, false, ""))
+          }
+      }
+    }
   }
 
   const createUser = () => {
@@ -58,7 +92,49 @@ const Register = () => {
 
   useEffect(() => {
     handleNonEmptyFieldCSS(null, true)
-  }, []);
+    checkCompletionState()
+  }, [])
+
+  useEffect(() => {
+    checkCompletionState()
+  }, [validationForm])
+
+  const checkErrorState=()=>{
+    if (validationForm.firstName.isError || validationForm.email.isError || validationForm.password.isError){
+      return true
+    }else{
+      return false
+    }
+  }
+
+  const checkCompletionState=()=>{
+    const checkError = checkErrorState()
+    if (checkError){
+      setDisableState(true)
+    }else{
+      if(form.firstName ==="" || form.password==="" || form.email===""){
+        setDisableState(true)
+      }else{
+        setDisableState(false)
+      }
+    }
+  }
+
+  const onEyeClick=()=>{
+    document.querySelectorAll(".text-input").forEach((element) => {
+      console.log("element", element)
+        if (element.id === "password") {
+          console.log("elemrnt", element)
+            if(element.type==="password"){
+              element.type="text"
+              setHidePassword(false)
+            }else {
+              element.type="password"
+              setHidePassword(true)
+          }
+        } 
+    })
+  }
 
   return (
     <>
@@ -73,59 +149,45 @@ const Register = () => {
           <h1 className="font-weight-400">Register</h1>
 
           <form className="form-login">
-            <div className="input-container mt-5">
-              <input
-                type="text"
-                className="text-input"
-                placeholder="Enter your text"
-                value={form.firstName}
-                name="firstName"
-                onChange={onInputChange}
-              />
-              <label htmlFor="name" className="label">
-                First Name
-              </label>
-            </div>
-            <div className="input-container mt-5">
-              <input
-                type="text"
-                className="text-input"
-                placeholder="Enter your text"
-                value={form.lastName}
-                name="lastName"
-                onChange={onInputChange}
-              />
-              <label htmlFor="name" className="label">
-                Last Name
-              </label>
-            </div>
-            <div className="input-container mt-5">
-              <input
-                type="text"
-                className="text-input"
-                placeholder="Enter your text"
-                value={form.email}
-                name="email"
-                onChange={onInputChange}
-              />
-              <label htmlFor="name" className="label">
-                Email
-              </label>
-            </div>
-            <div className="input-container mt-5">
-              <input
+            <InputText
+              id="firstName"
+              value={form.firstName}
+              name="firstName"
+              onChange={onInputChange}
+              label="First Name*"
+              isError={validationForm.firstName.isError}
+              errorMsg={validationForm.firstName.errorMsg}
+            />
+            <InputText
+              id="lastName"
+              value={form.lastName}
+              name="lastName"
+              onChange={onInputChange}
+              label="Last Name"
+            />
+            <InputText
+              id="email"
+              value={form.email}
+              name="email"
+              onChange={onInputChange}
+              label="Email*"
+              isError={validationForm.email.isError}
+              errorMsg={validationForm.email.errorMsg}
+            />
+              <InputText
                 type="password"
-                className="text-input"
-                placeholder="Enter your text"
+                id="password"
                 value={form.password}
                 name="password"
                 onChange={onInputChange}
+                label="Password*"
+                isError={validationForm.password.isError}
+                errorMsg={validationForm.password.errorMsg}
+                fieldType="password"
+                eyeClick={onEyeClick}
+                hidePassword={hidePassword}
               />
-              <label htmlFor="name" className="label">
-                Password
-              </label>
-            </div>
-            <Button Label="Register" onClick={createUser} />
+            <Button Label="Register" onClick={createUser} disabled={disableState}/>
           </form>
         </Col>
       </Row>

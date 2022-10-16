@@ -138,7 +138,7 @@ const AdminProducts = () => {
   }
 
   return (
-    <>
+    <div className="m-3">
       <div className="mt-5">
         <h1>Products</h1>
         {!addProductVisible && <Button Label="Add New Product" onClick={enableAddProduct}></Button>}
@@ -253,7 +253,7 @@ const AdminProducts = () => {
           }}
         />
       )}
-    </>
+    </div>
   )
 }
 

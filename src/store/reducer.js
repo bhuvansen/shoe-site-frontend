@@ -1,10 +1,11 @@
 import { accessReducer } from "./reducer/access-reducer"
-import { formReducer } from "./reducer/form-reducer"
+import { formReducer, formValidationReducer } from "./reducer/form-reducer"
 import { dashboardReducer } from "./reducer/dashboard-reducer"
 
 const rootReducers = {
     accessReducer:accessReducer,
     formReducer:formReducer,
-    dashboardReducer:dashboardReducer
+    dashboardReducer:dashboardReducer,
+    formValidationReducer:formValidationReducer
 }
 export default rootReducers

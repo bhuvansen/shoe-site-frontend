@@ -11,7 +11,7 @@ const Sidebar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const sideBarState = useSelector((state) => state.dashboardReducer)
-  const [sidebar, setSidebar] = useState(false)
+  const [sidebar, setSidebar] = useState(true)
 
   const showSidebar = () => {
     setSidebar(!sidebar)

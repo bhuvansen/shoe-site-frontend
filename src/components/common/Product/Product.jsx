@@ -23,7 +23,6 @@ const Product = ({ productArray , addToCart, deleteConfirmation, removeFromCart,
           )
         })}
       </Row>
-      
     </>
   )
 }

@@ -60,3 +60,44 @@
   .text-input:focus::placeholder {
     opacity: 1;
   }
+  .error-styling, .password-error-styling{
+    display: block;
+    text-align: left;
+    margin-left: 0;
+    padding-left: 12px;
+    background-color: #9b0101;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    margin-bottom: -18px !important;
+}
+.error-styling{
+  margin-top: 5px;
+}
+.password-error-styling{
+  margin-top: -19px;
+}
+.error-input-box{
+  border: 2px solid #9b0101;
+}
+.error-input-box:focus{
+  border: 2px solid #9b0101;
+}
+.error-label{
+  color: #9b0101;
+}
+.error-input-box:focus + .error-label{
+    color: #9b0101;
+  }
+.eye-icon{
+  position: relative;
+  top: -36px;
+  left: 90%;
+  margin-right: 10px;
+  cursor: pointer;
+  width: fit-content;
+  opacity: 80%;
+}
+.error-eye svg{
+  color: #9b0101;
+}

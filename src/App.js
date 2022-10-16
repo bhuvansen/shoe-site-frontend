@@ -33,7 +33,12 @@ function App() {
     ).then((response)=>{
       dispatch(updateFieldState("categoriesArray", response.data))
     })
+
+    
+
   }, [])
+
+  
 
   return (
     <div className="App">

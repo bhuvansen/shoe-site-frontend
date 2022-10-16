@@ -114,6 +114,8 @@ const SuccessPage = () => {
   return (
     <div className="success-page">
       <h1>Hold on! your transaction is successfull. We are creating the order.</h1>
+      <br />
+      <h2>THIS PAGE IS UNDER DEVELOPMENT</h2>
     </div>
   )
 }

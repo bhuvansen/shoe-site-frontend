@@ -15,8 +15,11 @@ import { updateFieldState } from '../../../store/action/form-action';
 import cartIcon from "../../../Asset/cartIcon.svg"
 import { updatedashboardState } from '../../../store/action/dashboard-action';
 import API from '../../../backend';
+import { isAuthenticated } from '../../../API/authentication';
 
 const NavbarApp = () => {
+  const { user, token } = isAuthenticated()
+
   const location = useLocation()
   const navigate = useNavigate()
   const currenTab = (path) => {
@@ -45,9 +48,31 @@ const NavbarApp = () => {
   const dashboardHandle=()=>{
     dispatch(updatedashboardState("selectedItem", "adminDashboard"))
   }
+
+  const numberOfItems = (cart) => {
+    console.log("cart", cart)
+    let quantity = 0
+    if(cart){
+      if ( cart.length > 0) {
+        cart.forEach((item) => {
+          quantity = quantity + item.quantity 
+        })
+      }
+    }
+    return quantity
+  }
+
   useEffect(() => {
-    console.log("RUNNING")
-  },[])
+    axios
+    .get(`${API}user/${user._id}/cart`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((cart) => {
+      let cartArray = cart.data
+      dispatch(updateFieldState("currentQuantity", numberOfItems(cartArray)))
+    })
+  }, [])
+
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -78,8 +103,11 @@ const NavbarApp = () => {
             {accessCheck.isSignedIn && accessCheck.isAdmin && (
             <Nav.Link as={Link} to="/admin/dashboard" className={"navNames"} style={currenTab("/admin/dashboard")} onClick={dashboardHandle} >Dashboard</Nav.Link>)}
             {accessCheck.isSignedIn && (
-              <div className='cartLogo' style={currenTab("/cart")} onClick={()=>navigate("/cart")}>
+              <div className='cartLogo position-relative' style={currenTab("/cart")} onClick={()=>navigate("/cart")}>
                 <img src={cartIcon} alt=""/>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ml-0">
+                  {form.currentQuantity}
+                </span>
               </div>
             )}
           </Nav>
