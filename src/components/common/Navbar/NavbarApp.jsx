@@ -86,7 +86,7 @@ const NavbarApp = () => {
     <>
       <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/" className="logo">Shoe Site</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/" className="logo">Shoe Site</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'  >
           <Nav className = "navbuttons">

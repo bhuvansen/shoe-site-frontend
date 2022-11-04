@@ -48,12 +48,38 @@ const Home = () => {
         dispatch(updateFieldState("productsArrayShown", product.data))
       }
     })
+    
   }, [])
 
 
   const redirectToPrdouct=(name, id)=>{
     name=name.toLowerCase().replace(/[\s]/, "")
     navigate(`/product/${name}/${id}`)
+  }
+
+  const selectedProduct=()=>{
+    let categoryName 
+    if (form.categoriesArray.length>0){
+      form.categoriesArray.forEach((item)=> {
+        if(item._id===categoryId){
+          categoryName = item.name
+        }
+      })
+      return categoryName
+    }else{
+      if (categoryId){
+        axios.get(
+          `${API}categories`
+        ).then((response)=>{
+          response.data.forEach((item)=> {
+            if(item._id===categoryId){
+              categoryName = item.name
+            }
+          })
+          return categoryName
+        })
+      }
+    }
   }
 
   return (
@@ -67,7 +93,7 @@ const Home = () => {
       {
         location.pathname==="/" ? (
           <h4 className="mt-4 font-weight-600">Available Products</h4>
-        ):(<h4 className="mt-4 font-weight-600">Selected Product</h4>)
+        ):(<h4 className="mt-4 font-weight-600">{selectedProduct()}</h4>)
       } 
       <Product productArray={ categoryId ? form.productsArrayShown.filter(prod=>prod.category._id===categoryId) : form.productsArrayShown}  seeDetails={redirectToPrdouct}/>
 
