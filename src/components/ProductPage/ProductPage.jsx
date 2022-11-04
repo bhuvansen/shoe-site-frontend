@@ -77,7 +77,6 @@ const ProductPage = () => {
         .then((resp) => {
           dispatch(updateFieldState("userCart", resp.data))
           let cart = resp.data.filter((item) => item._id === productId)
-          console.log("cart", cart)
           dispatch(updateFieldState("quantityInCart", cart[0].quantity))
         })
     } else {

@@ -1,6 +1,5 @@
 export const authenticate = (data, next) => {
   if (typeof window != "undefined") {
-    console.log("RUNNING")
     localStorage.setItem("jwt", JSON.stringify(data))
     next()
   }

@@ -64,18 +64,12 @@ const Login = () => {
         let data = response.data
         authenticate(data, () => {
           dispatch(updateFieldState("email", ""))
-          console.log("RUNNING NEXT")
           dispatch(updateFieldState("password", ""))
           performRedirect()
           });
       })
       .catch((err) => {
         console.log("err", err.response)
-        // let error = {
-        //   response: err.response.statusText,
-        //   data: err.response.data,
-        // }
-        // console.log("error", error)
       })
   }
 
@@ -130,9 +124,7 @@ const Login = () => {
 
   const onEyeClick=()=>{
     document.querySelectorAll(".text-input").forEach((element) => {
-      console.log("element", element)
         if (element.id === "password") {
-          console.log("elemrnt", element)
             if(element.type==="password"){
               element.type="text"
               setHidePassword(false)
@@ -147,7 +139,7 @@ const Login = () => {
   return (
     <>
       <NavbarApp />
-      <Row>
+      <Row className="mb-5">
         <Col className="shoeCol p-0 shoeBorder" lg={6}>
           <div className="shoeSVG">
             <img src={loginShoe} alt="" />

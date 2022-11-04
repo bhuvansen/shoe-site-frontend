@@ -76,7 +76,6 @@ const Register = () => {
         dispatch(updateFieldState("showModal", true))
       })
       .catch((err) => {
-        console.log("err", err.response)
         let error = {
           response: err.response.statusText,
           data: err.response.data,
@@ -122,9 +121,7 @@ const Register = () => {
 
   const onEyeClick=()=>{
     document.querySelectorAll(".text-input").forEach((element) => {
-      console.log("element", element)
         if (element.id === "password") {
-          console.log("elemrnt", element)
             if(element.type==="password"){
               element.type="text"
               setHidePassword(false)
@@ -139,7 +136,7 @@ const Register = () => {
   return (
     <>
       <NavbarApp />
-      <Row>
+      <Row className="mb-5">
         <Col className="shoeCol p-0 shoeBorder" lg={6}>
           <div className="shoeSVG">
             <img src={loginShoe} alt="" />

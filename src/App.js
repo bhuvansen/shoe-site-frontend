@@ -7,6 +7,7 @@ import { useEffect } from "react"
 import axios from "axios"
 import API from "./backend"
 import { updateFieldState } from "./store/action/form-action"
+// import Footer from "./components/common/Footer/Footer"
 
 function App() {
   const { user } = isAuthenticated()
@@ -26,8 +27,6 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("APP LANDING")
-
     axios.get(
       `${API}categories`
     ).then((response)=>{

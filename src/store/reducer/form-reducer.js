@@ -12,7 +12,9 @@ const defaultState={
    sizeList:[{}],
    selectedSize:"",
    successOrderBanner:false,
-   currentQuantity:""
+   currentQuantity:"",
+   userCart:[],
+   selectedProductCategory:""
 }
 
 const validationState={

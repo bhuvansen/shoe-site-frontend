@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux"
 import { useNavigate, useParams } from "react-router"
 import { isAuthenticated } from "../../API/authentication"
 import API from "../../backend"
-import { updateFieldState } from "../../store/action/form-action"
 import "./SuccessPage.css"
+
 const SuccessPage = () => {
   const { sessionId } = useParams()
   const { user, token } = isAuthenticated()
@@ -65,48 +65,43 @@ const SuccessPage = () => {
         }
       }
      
-      axios.get(`${API}stripe/order/success/${sessionId}`).then((response) => {
-        axios
-          .post(`${API}order/updateStock/${user._id}`, JSON.stringify(order), {
+      let successCall = await axios.get(`${API}stripe/order/success/${sessionId}`)
+      
+      if (successCall.status===200){
+          let updateStockCall = await  axios.post(`${API}order/updateStock/${user._id}`, JSON.stringify(order), {
+          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+          })
+          const body = {
+            order: { products: orderedProduct, transaction_id: "", amount: amount },
+          }
+          let createOrderCall = await axios.post(`${API}order/create/${user._id}`, body, {
             headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
           })
-          .catch((err) => console.log(err))
-      })
-  
-      const body = {
-        order: { products: orderedProduct, transaction_id: "", amount: amount },
       }
-      axios
-        .get(`${API}stripe/order/success/${sessionId}`)
-        .then((response) => {
-          axios.post(`${API}order/create/${user._id}`, body, {
-            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-          })
-        })
-        .catch((err) => console.log(err))
-      axios
-        .get(`${API}user/${user._id}/cart`, {
+
+      let checkCart = await axios.get(`${API}user/${user._id}/cart`, {
           headers: { Authorization: `Bearer ${token}` },
         })
-        .then((cart) => {
-          let cartArray = cart.data
-          for (let i in cartArray) {
-            for (let j in orderedProduct) {
-              if (cartArray[i]._id === orderedProduct[j]._id && cartArray[i].size === orderedProduct[j].size) {
-                cartArray[i].quantity = cartArray[i].quantity - orderedProduct[j].quantity
-              }
+      if (checkCart.status===200){
+        let cartArray = checkCart.data
+        for (let i in cartArray) {
+          for (let j in orderedProduct) {
+            if (cartArray[i]._id === orderedProduct[j]._id && cartArray[i].size === orderedProduct[j].size) {
+              cartArray[i].quantity = cartArray[i].quantity - orderedProduct[j].quantity
             }
           }
-          cartArray = cartArray.filter((item) => item.quantity !== 0)
-          axios
-            .put(`${API}user/${user._id}/cart/update`, cartArray, {
+        }
+        cartArray = cartArray.filter((item) => item.quantity !== 0)
+        let cartUpdate = await axios.put(`${API}user/${user._id}/cart/update`, cartArray, {
               headers: { Authorization: `Bearer ${token}` },
             })
-            .then(() => {
-              dispatch("successOrderBanner", false)
+        if (cartUpdate.status===200){
+          localStorage.removeItem("cart")
+          localStorage.removeItem("amount")
               navigate("/")
-            })
-        })
+        }
+      }
+
     }
     successPrequisite()
   }, [])
@@ -114,8 +109,6 @@ const SuccessPage = () => {
   return (
     <div className="success-page">
       <h1>Hold on! your transaction is successfull. We are creating the order.</h1>
-      <br />
-      <h2>THIS PAGE IS UNDER DEVELOPMENT</h2>
     </div>
   )
 }

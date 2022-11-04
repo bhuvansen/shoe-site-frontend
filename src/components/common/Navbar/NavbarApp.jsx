@@ -50,7 +50,6 @@ const NavbarApp = () => {
   }
 
   const numberOfItems = (cart) => {
-    console.log("cart", cart)
     let quantity = 0
     if(cart){
       if ( cart.length > 0) {
@@ -63,15 +62,25 @@ const NavbarApp = () => {
   }
 
   useEffect(() => {
-    axios
-    .get(`${API}user/${user._id}/cart`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((cart) => {
-      let cartArray = cart.data
-      dispatch(updateFieldState("currentQuantity", numberOfItems(cartArray)))
-    })
+    if (accessCheck.isSignedIn){
+      axios
+      .get(`${API}user/${user._id}/cart`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((cart) => {
+        let cartArray = cart.data
+        dispatch(updateFieldState("currentQuantity", numberOfItems(cartArray)))
+      })
+    }
   }, [])
+
+  useEffect(() => {
+      dispatch(updateFieldState("currentQuantity", numberOfItems(form.userCart)))
+  }, [form.userCart])
+
+  const redirectSelectedProducts=(id)=>{
+    navigate(`/products/${id}`)
+  }
 
   return (
     <>
@@ -85,13 +94,9 @@ const NavbarApp = () => {
             <NavDropdown title="Categories" id="basic-nav-dropdown" className="navNames boder-dropdown">
             {form.categoriesArray.map((category, index)=>{
               return (
-                <NavDropdown.Item key={index} href="#action/1">{category.name}</NavDropdown.Item>
+                <NavDropdown.Item key={index}  onClick={()=>redirectSelectedProducts(category._id)}>{category.name}</NavDropdown.Item>
               )
             })}
-              {/* <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/4">
-                Separated link
-              </NavDropdown.Item> */}
             </NavDropdown>
             <Nav.Link as={Link} to="/contact" className={"navNames"}  style={currenTab("/contact")}>Contact</Nav.Link>
             {!accessCheck.isSignedIn ? (
@@ -105,7 +110,7 @@ const NavbarApp = () => {
             {accessCheck.isSignedIn && (
               <div className='cartLogo position-relative' style={currenTab("/cart")} onClick={()=>navigate("/cart")}>
                 <img src={cartIcon} alt=""/>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ml-0">
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ml-0">
                   {form.currentQuantity}
                 </span>
               </div>

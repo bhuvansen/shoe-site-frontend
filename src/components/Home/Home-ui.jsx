@@ -1,15 +1,20 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { isAuthenticated } from "../../API/authentication"
 import API from "../../backend"
 import { updateFieldState } from "../../store/action/form-action"
 import Popup from "../common/Modal/Modal"
 import NavbarApp from "../common/Navbar/NavbarApp"
 import Product from "../common/Product/Product"
+import { useLocation } from "react-router"
+import Banner from "./Banner"
 
 const Home = () => {
+  const { categoryId } = useParams()
+  const location = useLocation()
+
   const form = useSelector((state) => state.formReducer)
   const accessReducer = useSelector((state) => state.accessReducer)
   const dispatch = useDispatch()
@@ -17,7 +22,6 @@ const Home = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.log("HOME LANDING")
     axios.get(`${API}products`).then((product) => {
       dispatch(updateFieldState("productsArray", product.data))
       if(accessReducer.isSignedIn){
@@ -55,7 +59,17 @@ const Home = () => {
   return (
     <>
       <NavbarApp />
-      <Product productArray={form.productsArrayShown}  seeDetails={redirectToPrdouct}/>
+      {
+        location.pathname==="/" && (
+            <Banner/>
+        )
+      } 
+      {
+        location.pathname==="/" ? (
+          <h4 className="mt-4 font-weight-600">Available Products</h4>
+        ):(<h4 className="mt-4 font-weight-600">Selected Product</h4>)
+      } 
+      <Product productArray={ categoryId ? form.productsArrayShown.filter(prod=>prod.category._id===categoryId) : form.productsArrayShown}  seeDetails={redirectToPrdouct}/>
 
         <Popup
           title="Warning"
@@ -80,6 +94,8 @@ const Home = () => {
           buttonLabelSecondary=""
           secondButtonReq={false}
         />
+        <div className="">
+        </div>
     </>
   )
 }
