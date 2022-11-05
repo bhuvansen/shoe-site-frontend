@@ -9,6 +9,9 @@ const defaultState={
     newProductQuantity:[{}],
     newProductCategory:"",
     newProductImage:"",
+    totalOrders:"",
+    pendingOrders:"",
+    completedOrders:""
 }
 
 export const dashboardReducer=(state=defaultState, action)=>{

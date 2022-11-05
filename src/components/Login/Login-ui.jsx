@@ -8,22 +8,25 @@ import Button from "../common/button/button"
 import { useSelector, useDispatch } from "react-redux"
 import { updateFieldState, updateFieldValidationState } from "../../store/action/form-action"
 import { handleNonEmptyFieldCSS } from "../../common/utils"
-import axios from "axios"
 import { authenticate, isAuthenticated } from "../../API/authentication"
 import { useNavigate } from "react-router"
 import { isAdmin, isSignedIn } from "../../store/action/access-action"
-import API from "../../backend"
 import InputText from "../common/Input-Fields/InputText"
+import ErrorAlert from "../common/ErrorAlert/ErrorAlert"
+import { login } from "../../store/action/login-action"
 
 const Login = () => {
   const navigate = useNavigate()
   const form = useSelector((state) => state.formReducer)
   const validationForm = useSelector((state) => state.formValidationReducer)
+  const loginState = useSelector((state) => state.loginReducer)
 
   const dispatch = useDispatch()
 
   const [hidePassword, setHidePassword] = useState(true)
   const [disableState, setDisableState] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [serviceError, setServiceError] = useState(false)
 
   const onInputChange = (event) => {
     let name = event.target.name
@@ -55,28 +58,29 @@ const Login = () => {
     }
   }
 
-  const loginUser = () => {
-    axios
-      .post(`${API}signin`, {
-        email: form.email,
-        password: form.password,
-      }).then((response) => {
-        let data = response.data
-        authenticate(data, () => {
-          dispatch(updateFieldState("email", ""))
-          dispatch(updateFieldState("password", ""))
-          performRedirect()
-          });
-      })
-      .catch((err) => {
-        console.log("err", err.response)
-      })
+  const loginUser = async() => {
+    setIsLoading(true)
+    try{
+      let loginPromise  = await dispatch(login(form.email, form.password))
+      authenticate(loginPromise, () => {
+        dispatch(updateFieldState("email", ""))
+        dispatch(updateFieldState("password", ""))
+        performRedirect()
+      });
+      setIsLoading(false)
+    }
+    catch(error){
+      setServiceError(error.errors)
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
+    setIsLoading(true)
     handleNonEmptyFieldCSS(null, true)
     performRedirect()
     checkCompletionState()
+    setIsLoading(false)
   },[])
 
   useEffect(() => {
@@ -138,7 +142,18 @@ const Login = () => {
 
   return (
     <>
+      {isLoading && 
+      (
+        <>
+          <div className="fade modal-backdrop show"></div>
+          <div className="spinner-border spinner-center" role="status">
+          </div>
+        </>
+        )
+      }
       <NavbarApp />
+      <ErrorAlert message = {serviceError}/>
+
       <Row className="mb-5">
         <Col className="shoeCol p-0 shoeBorder" lg={6}>
           <div className="shoeSVG">

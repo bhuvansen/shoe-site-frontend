@@ -10,9 +10,9 @@ import { updateFieldState, updateFieldValidationState } from "../../store/action
 import { handleNonEmptyFieldCSS } from "../../common/utils"
 import { useNavigate } from "react-router-dom"
 import Popup from "../common/Modal/Modal"
-import axios from "axios"
-import API from "../../backend"
 import InputText from "../common/Input-Fields/InputText"
+import { signup } from "../../store/action/login-action"
+import ErrorAlert from "../common/ErrorAlert/ErrorAlert"
 
 const Register = () => {
   const navigate = useNavigate()
@@ -23,6 +23,7 @@ const Register = () => {
 
   const [disableState, setDisableState] = useState(false)
   const [hidePassword, setHidePassword] = useState(true)
+  const [serviceError, setServiceError] = useState(false)
 
   const onInputChange = (event) => {
     let name = event.target.name
@@ -61,26 +62,14 @@ const Register = () => {
   }
 
   const createUser = () => {
-    axios
-      .post(`${API}signup`, {
-        firstName: form.firstName,
-        lastName: form.lastName,
-        email: form.email,
-        password: form.password,
-      })
-      .then(() => {
+      dispatch(signup(form.email, form.password)).then(()=>{
         dispatch(updateFieldState("firstName", ""))
         dispatch(updateFieldState("lastName", ""))
         dispatch(updateFieldState("email", ""))
         dispatch(updateFieldState("password", ""))
         dispatch(updateFieldState("showModal", true))
-      })
-      .catch((err) => {
-        let error = {
-          response: err.response.statusText,
-          data: err.response.data,
-        }
-        console.log("error", error)
+      }).catch((error)=>{
+          setServiceError(error.errors)
       })
   }
 
@@ -136,6 +125,8 @@ const Register = () => {
   return (
     <>
       <NavbarApp />
+      <ErrorAlert message = {serviceError}/>
+
       <Row className="mb-5">
         <Col className="shoeCol p-0 shoeBorder" lg={6}>
           <div className="shoeSVG">

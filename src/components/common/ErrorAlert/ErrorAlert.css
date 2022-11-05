@@ -1,0 +1,12 @@
+.error-icon svg , .error-icon span{
+    color: white;
+  }
+  .error-icon {
+    background-color: #9b0101;
+    padding: 5px;
+  }
+  .error-icon div{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }

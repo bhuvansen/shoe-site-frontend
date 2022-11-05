@@ -1,8 +1,8 @@
 const defaultState={
    firstName:"",
    lastName:"",
-   email:"",
-   password:"",
+   email:"bhuvan@gmail.com",
+   password:"Bhuvan18@",
    showModal:false,
    categoriesArray:[],
    productsArray:[],
